@@ -3,18 +3,24 @@ import { useEffect, useState } from "react";
 export function Users()
 {
   const [ users, setUsers ] = useState([]);
+  const [ selfAPIResponse, setSelfAPIResponse ] = useState();
 
   useEffect(() =>
   {
-    async function fetchAPI()
+    async function fetchAPIs()
     {
       const fetchedUsers = await fetch('https://jsonplaceholder.typicode.com/users')
         .then(response => response.json());
 
       setUsers(fetchedUsers);
+
+      const fetchedSelfAPI = await fetch('/api/test')
+        .then(response => response.text());
+
+      setSelfAPIResponse(fetchedSelfAPI);
     }
 
-    fetchAPI();
+    fetchAPIs();
   }, [ ]);
 
   return (
@@ -28,6 +34,7 @@ export function Users()
         </li>
       )
     }
+      <h2>{selfAPIResponse}</h2>
     </ul>
   );
 }
